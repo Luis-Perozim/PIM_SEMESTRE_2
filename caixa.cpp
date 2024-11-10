@@ -1,29 +1,39 @@
 #include <iostream>
+#include <fstream>
 using namespace std;
 
 int main() {
+    string nomeProduto;
+    double valorProduto, valorTotal = 0;
 
-	char nomeProduto;
-	double valorProduto, valorTotal;
+    ofstream arquivoServidor("servidor.txt", ios::app);
 
-	do {
-		cout<<"Digite o nome do produto: ";
-		cin>>nomeProduto;
-		if(nomeProduto == 'F') {
-			break;
-		}
+    do {
+        cout << "Digite o nome do produto: ";
+        cin >> nomeProduto;
+        if (nomeProduto == "F") {
+            break;
+        }
 
-		cout<<"Digite o valor a pagar: R$";
-		cin>>valorProduto;
+        cout << "Digite o valor a pagar: R$ ";
+        cin >> valorProduto;
 
-		cout<<"-------------------------------"<<endl;
-		valorTotal += valorProduto;
-		cout<<"TOTAL: R$"<<valorTotal<<"\ndigite F para finalizar a compra"<<endl;
-		cout<<"-------------------------------"<<endl;
+        cout << "-------------------------------" << endl;
+        valorTotal += valorProduto;
+        cout << "Total: R$ " << valorTotal << "\n- Digite F para finalizar a compra" << endl;
+        cout << "-------------------------------" << endl;
 
-	} while(nomeProduto != 'F');
+        if (arquivoServidor.is_open()) {
+            arquivoServidor << "Compra - Produto: " << nomeProduto << ", Valor: R$ " << valorProduto << endl;
+        } else {
+            cout << "Erro ao abrir o arquivo do servidor!" << endl;
+        }
 
-	cout<<"*****COMPRA FINALIZADA*****"<<endl;
+    } while (nomeProduto != "F");
 
-	return 0;
+    cout << "*****COMPRA FINALIZADA*****" << endl;
+
+    arquivoServidor.close();
+
+    return 0;
 }
